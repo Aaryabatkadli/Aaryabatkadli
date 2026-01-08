@@ -2,18 +2,18 @@ from fastapi import FastAPI
 import requests
 from vector_store import VectorStore
 
-# 1️⃣ Create FastAPI app (THIS IS REQUIRED)
+
 app = FastAPI()
 
-# 2️⃣ Ollama configuration
+
 OLLAMA_URL = "http://localhost:11434/api/embeddings"
 MODEL = "theepicdev/nomic-embed-text:v1.5-q6_K"
 
-# 3️⃣ Global vector database
+
 vector_db = None
 
 
-# 4️⃣ Function to get embedding from Ollama
+
 def get_embedding(text: str):
     response = requests.post(
         OLLAMA_URL,
@@ -27,7 +27,7 @@ def get_embedding(text: str):
     return response.json()["embedding"]
 
 
-# 5️⃣ Run once when server starts
+
 @app.on_event("startup")
 def startup_event():
     global vector_db
@@ -47,7 +47,7 @@ def startup_event():
     print("✅ Vector database initialized")
 
 
-# 6️⃣ Search API
+
 @app.post("/search")
 def search(query: str):
     query_embedding = get_embedding(query)
@@ -58,7 +58,7 @@ def search(query: str):
     }
 
 
-# 7️⃣ Health check (optional but useful)
+
 @app.get("/")
 def root():
     return {"status": "API is running"}
